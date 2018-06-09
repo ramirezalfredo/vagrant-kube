@@ -1,0 +1,35 @@
+---
+# Jenkins Configuration
+
+- name: Jenkins | Install Jenkins repo
+  yum_repository: 
+    name: jenkins
+    description: Jenkins-Stable Repository
+    baseurl: http://pkg.jenkins.io/redhat-stable
+    gpgcheck: 1
+    gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+- name: Jenkins | Install Jenkins
+  package: 
+    name: jenkins
+    state: present
+
+- name: Jenkins | Start Jenkins
+  service: 
+    name: jenkins 
+    state: restarted
+    enabled: yes
+
+- name: Docker | Install docker
+  package:
+    name: docker
+    state: present
+
+- name: k8s | Add ec2-user to docker group
+  command: usermod -aG docker ec2-user
+
+- name: restart docker
+  service: 
+    name: docker
+    state: started
+    enabled: yes
