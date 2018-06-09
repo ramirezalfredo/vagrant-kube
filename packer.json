@@ -1,24 +1,28 @@
 {
-  "variables": {
-    "aws_access_key": "AKIAIT52YAQ7OMTAZPKQ",
-    "aws_secret_key": "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"
-  },
   "builders": [{
-    "type": "amazon-ebs",
-    "access_key": "{{user `aws_access_key`}}",
-    "secret_key": "{{user `aws_secret_key`}}",
-    "region": "us-east-1",
-    "source_ami_filter": {
-      "filters": {
-      "virtualization-type": "hvm",
-      "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
-      "root-device-type": "ebs"
-      },
-      "owners": ["099720109477"],
-      "most_recent": true
-    },
-    "instance_type": "t2.micro",
-    "ssh_username": "ubuntu",
-    "ami_name": "packer-example {{timestamp}}"
+    "type": "vmware-vmx",
+    "source_path": "/Users/alfredo/Documents/Virtual Machines.localized/kube-zero.vmwarevm/kube-zero.vmx",
+    "disable_vnc": true,
+    "headless": true,
+    "communicator": "ssh",
+    "ssh_timeout": "2m",
+    "ssh_username": "alfredo",
+    "ssh_password": "4312rgaj",
+    "shutdown_timeout": "45s",
+    "shutdown_command": "shutdown -P now"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": ["sudo yum update -y --exclude=docker-* --exclude=kube*"]
+  }],
+  "post-processors": [{
+    "type": "vagrant",
+    "compression_level": 1,
+    "keep_input_artifact": true,
+    "override": {
+      "vmware": {
+        "compression_level": 0
+      }
+    }
   }]
 }
