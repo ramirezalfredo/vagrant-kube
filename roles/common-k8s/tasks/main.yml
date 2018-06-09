@@ -57,12 +57,12 @@
 
 - name: k8s | Install kubeadm
   package:
-    name: kubeadm
+    name: kubeadm-1.9.8-0
     state: present
 
 - name: k8s | Install kubelet
   package:
-    name: kubelet
+    name: kubelet-1.9.8-0
     state: present
   notify:
     - restart kubelet
