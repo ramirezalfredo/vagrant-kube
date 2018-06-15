@@ -1,6 +1,6 @@
 ---
 # General
-ansible_user: alfredo
+#ansible_user: alfredo
 
 # MongoDB
 MONGOD_CONF: /etc/mongod.conf
@@ -11,7 +11,6 @@ k8s_token: 086db1.099a4e210cc66ce9
 # Network implementation('flannel', 'calico')
 network: flannel
 pod_network_cidr: "10.244.0.0/16"
-cni_opts: "interface=eth1" # flannel: --iface=eth1, calico: interface=eth1
 
 enable_dashboard: yes
 
