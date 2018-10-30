@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "base"
+  config.vm.box = "vmware/photon"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -49,16 +49,18 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
+  config.vm.provider "vmware_desktop" do |v|
+    # Display the vmware GUI when booting the machine
+    v.gui = false
+    # Customize the amount of memory on the VM:
+    v.vmx["numvcpus"] = "2"
+    v.vmx["memsize"] = "3072"
+  end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
+
+  # config.ssh.private_key_path = "~/.ssh/id_rsa"
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
