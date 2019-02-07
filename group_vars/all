@@ -1,6 +1,6 @@
 ---
 # General
-#ansible_user: alfredo
+ansible_user: alfredo
 
 # MongoDB
 MONGOD_CONF: /etc/mongod.conf

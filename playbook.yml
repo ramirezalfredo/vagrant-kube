@@ -1,12 +1,32 @@
 ---
-- name: k8s-common
-  hosts: all
-  #remote_user: alfredo
-  gather_facts: true
+# - name: k8s-common
+#   hosts: all
+#   remote_user: alfredo
+#   gather_facts: true
+#   roles:
+#     - common-k8s
+#   tags:
+#     - k8s-common
+
+- name: k8s-master
+  hosts: master-node
+  remote_user: alfredo
+  gather_facts: False
   roles:
     - common-k8s
+    - master-k8s
   tags:
-    - k8s-common
+    - k8s-master
+
+- name: k8s-worker
+  hosts: worker-node
+  remote_user: alfredo
+  gather_facts: False
+  roles:
+    - common-k8s
+    - worker-k8s
+  tags:
+    - k8s-worker
 
 # - name: jenkins
 #   hosts: all
@@ -28,22 +48,3 @@
 #   tags:
 #     - mongodb
 
-# - name: k8s-master
-#   hosts: all
-#   remote_user: ec2-user
-#   gather_facts: False
-#   roles:
-#     - common-k8s
-#     - master-k8s
-#   tags:
-#     - k8s-master
-
-# - name: k8s-worker
-#   hosts: all
-#   remote_user: ec2-user
-#   gather_facts: False
-#   roles:
-#     - common-k8s
-#     - worker-k8s
-#   tags:
-#     - k8s-worker
