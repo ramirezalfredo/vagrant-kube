@@ -1,73 +1,82 @@
 ---
-# Docker and k8s components for everyone!
+- name: Set authorized key taken from file
+  authorized_key:
+    user: alfredo
+    state: present
+    key: "{{ lookup('file', '/home/alfredo/.ssh/id_rsa.pub') }}"
 
-- name: Docker | Install CS Docker Engine repository
-  yum_repository:
-    name: docker
-    description: Docker Repository
-    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
-    gpgcheck: 1
-    gpgkey: https://yum.dockerproject.org/gpg
+# - name: Docker | Install CS Docker Engine repository
+#   yum_repository:
+#     name: docker
+#     description: Docker Repository
+#     baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+#     gpgcheck: 1
+#     gpgkey: https://yum.dockerproject.org/gpg
 
-- name: Kubernetes | Install Kubernetes repository
-  yum_repository: 
-    name: kubernetes
-    description: Kubernetes Repository
-    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-    gpgcheck: 1
-    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+# - name: Kubernetes | Install Kubernetes repository
+#   yum_repository: 
+#     name: kubernetes
+#     description: Kubernetes Repository
+#     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+#     gpgcheck: 1
+#     gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 
-- selinux:
-    state: disabled
+# - selinux:
+#     state: disabled
 
 - name: Docker | Install docker-engine
   package:
     name: docker-engine-17.03.0.ce-1.el7.centos.x86_64
     state: present
 
-- name: k8s | Add ec2-user to docker group
+- name: kKs | Add user to the Docker group
   command: usermod -aG docker alfredo
 
-- name: restart docker
+# - name: Docker | Configure cgroup driver
+#   template:
+#     src: daemon.json
+#     dest: /etc/docker/daemon.json
+#   notify:
+#     - restart docker
+
+- name: Start Docker
   service: 
     name: docker
     state: started
     enabled: yes
 
-- name: Docker | Configure cgroup driver
-  template:
-    src: daemon.json
-    dest: /etc/docker/daemon.json
-  notify:
-    - restart docker
-
-- name: restart docker
-  service: 
-    name: docker
-    state: restarted
-    enabled: yes
-
-- name: k8s | Configure iptables
+- name: K8s | Configure iptables
   template:
     src: k8s.conf
     dest: /etc/sysctl.d/k8s.conf
 
-- name: k8s | Reload sysctl
+- name: K8s | Reload sysctl
   command: sysctl --system
 
-- name: k8s | Install kubeadm
+- name: K8s | Install Kubernetes repository
+  apt_repository: 
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes
+
+- name: K8s | Install kubeadm
   package:
-    name: kubeadm-1.9.8-0
+    name: kubeadm-1.12.5-00
     state: present
 
-- name: k8s | Install kubelet
+- name: K8s | Install kubectl
   package:
-    name: kubelet-1.9.8-0
+    name: kubectl-1.12.5-00
+    state: present
+
+- name: K8s | Install kubelet
+  package:
+    name: kubelet-1.12.5-00
     state: present
   notify:
     - restart kubelet
 
-- name: restart kubelet
+- name: K8s | Start kubelet
   service:
     name: kubelet
     state: started
