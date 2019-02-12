@@ -1,0 +1,9 @@
+---
+- name: k8s-common
+  hosts: all
+  remote_user: alfredo
+  gather_facts: true
+  roles:
+    - common-k8s
+  tags:
+    - k8s-common

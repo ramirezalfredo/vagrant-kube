@@ -5,39 +5,44 @@
     state: present
     key: "{{ lookup('file', '/home/alfredo/.ssh/id_rsa.pub') }}"
 
-# - name: Docker | Install CS Docker Engine repository
-#   yum_repository:
-#     name: docker
-#     description: Docker Repository
-#     baseurl: https://yum.dockerproject.org/repo/main/centos/7/
-#     gpgcheck: 1
-#     gpgkey: https://yum.dockerproject.org/gpg
+- name: Docker | Install CS Docker Engine repository
+  yum_repository:
+    name: docker
+    description: Docker Repository
+    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+    gpgcheck: 1
+    gpgkey: https://yum.dockerproject.org/gpg
+    when: ansible_facts['os_family'] == "CentOS"
 
-# - name: Kubernetes | Install Kubernetes repository
-#   yum_repository: 
-#     name: kubernetes
-#     description: Kubernetes Repository
-#     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-#     gpgcheck: 1
-#     gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+- name: Kubernetes | Install Kubernetes repository
+  yum_repository: 
+    name: kubernetes
+    description: Kubernetes Repository
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgcheck: 1
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    when: ansible_facts['os_family'] == "CentOS"
 
-# - selinux:
-#     state: disabled
+- selinux:
+    state: disabled
+    when: ansible_facts['os_family'] == "CentOS"
 
 - name: Docker | Install docker-engine
   package:
     name: docker-engine-17.03.0.ce-1.el7.centos.x86_64
     state: present
+    when: ansible_facts['os_family'] == "CentOS"
 
 - name: kKs | Add user to the Docker group
   command: usermod -aG docker alfredo
 
-# - name: Docker | Configure cgroup driver
-#   template:
-#     src: daemon.json
-#     dest: /etc/docker/daemon.json
-#   notify:
-#     - restart docker
+- name: Docker | Configure cgroup driver
+  template:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    when: ansible_facts['os_family'] == "CentOS"
+  notify:
+    - restart docker
 
 - name: Start Docker
   service: 
@@ -58,6 +63,7 @@
     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
     state: present
     filename: kubernetes
+    when: ansible_facts['os_family'] == "Debian"
 
 - name: K8s | Install kubeadm
   package:

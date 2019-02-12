@@ -1,0 +1,10 @@
+---
+- name: k8s-worker
+  hosts: worker-node
+  remote_user: alfredo
+  gather_facts: False
+  roles:
+    - common-k8s
+    - worker-k8s
+  tags:
+    - k8s-worker
