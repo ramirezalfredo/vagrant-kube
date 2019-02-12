@@ -75,16 +75,19 @@
   command: sysctl --system
 
 - name: K8s | Install kubeadm
+  when: ansible_facts['os_family'] == "CentOS"
   apt:
     name: kubeadm=1.12.5-00
     state: present
 
 - name: K8s | Install kubectl
+  when: ansible_facts['os_family'] == "CentOS"
   apt:
     name: kubectl=1.12.5-00
     state: present
 
 - name: K8s | Install kubelet
+  when: ansible_facts['os_family'] == "CentOS"
   apt:
     name: kubelet=1.12.5-00
     state: present
