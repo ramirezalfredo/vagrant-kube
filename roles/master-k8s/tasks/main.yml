@@ -5,20 +5,24 @@
 
 - name: K8s | Init Kubernetes cluster
   shell: |
-    kubeadm init --pod-network-cidr {{ pod_network_cidr }} \
-                 --token {{ k8s_token }} \
-                 --apiserver-advertise-address {{ k8s_master_ip }}
-  register: init_cluster
+    kubeadm init --pod-network-cidr {{ pod_network_cidr }} # \
+                # --token {{ k8s_token }} \
+                # --apiserver-advertise-address {{ k8s_master_ip }}
+  register: kubeadm_init
+
+- debug:
+    var: kubeadm_init
+    verbosity: 2
 
 - name: K8s | Create Kubernetes config directory
   become: false
   file: path="~/.kube/" state=directory
 
-- name: k8s | Copy admin.conf
-  command: cp {{ kubeadmin_config }} /home/ec2-user/.kube/config
+- name: k8s | Copy admin.conf to .kube/config
+  command: cp {{ kubeadmin_config }} /home/{{ ansible_user }}/.kube/config
 
-- name: k8s | Copy admin.conf
-  command: chown ec2-user:ec2-user /home/ec2-user/.kube/config
+- name: k8s | Set permissions to config
+  command: chown ec2-user:ec2-user /home/{{ ansible_user }}/.kube/config
 
 # - name: K8s | Copy admin.conf to Home directory
 #   #when: init_cluster and ansible_user is defined
