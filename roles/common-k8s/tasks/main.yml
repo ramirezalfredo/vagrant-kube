@@ -24,18 +24,18 @@
     gpgcheck: 1
     gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 
-# - name: K8s | Install python-apt
-#   when: ansible_facts['os_family'] == "Debian"
-#   package:
-#     name: python-apt
-#     state: present
-
 - name: K8s | Install Kubernetes repository
   when: ansible_facts['os_family'] == "Debian"
   apt_repository: 
     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
     state: present
     filename: kubernetes
+
+# - name: K8s | Install python-apt
+#   when: ansible_facts['os_family'] == "Debian"
+#   package:
+#     name: python-apt
+#     state: present
 
 - name: SELinux
   when: ansible_facts['os_family'] == "CentOS"

@@ -2,7 +2,8 @@
 - name: k8s-master
   hosts: master-node
   remote_user: alfredo
-  gather_facts: False
+  gather_facts: true
+  become: yes
   roles:
     - common-k8s
     - master-k8s

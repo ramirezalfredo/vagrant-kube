@@ -1,13 +1,13 @@
 ---
 
 - name: K8s | Reset Kubernetes component
-  shell: "kubeadm reset"
+  shell: "kubeadm reset -f"
 
+- name: K8s | pull required images
+  shell: kubeadm config images pull
 - name: K8s | Init Kubernetes cluster
   shell: |
-    kubeadm init --pod-network-cidr {{ pod_network_cidr }} # \
-                # --token {{ k8s_token }} \
-                # --apiserver-advertise-address {{ k8s_master_ip }}
+    kubeadm init --pod-network-cidr {{ pod_network_cidr }}
   register: kubeadm_init
 
 - debug:
@@ -22,7 +22,7 @@
   command: cp {{ kubeadmin_config }} /home/{{ ansible_user }}/.kube/config
 
 - name: k8s | Set permissions to config
-  command: chown ec2-user:ec2-user /home/{{ ansible_user }}/.kube/config
+  command: chown {{ ansible_user }}:{{ ansible_user }} /home/{{ ansible_user }}/.kube/config
 
 # - name: K8s | Copy admin.conf to Home directory
 #   #when: init_cluster and ansible_user is defined
