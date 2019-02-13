@@ -44,4 +44,4 @@
 #  register: started_kubelet
 - name: K8s | Install Flannel SDN
   become: false
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.10.0/Documentation/kube-flannel.yml
+  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
