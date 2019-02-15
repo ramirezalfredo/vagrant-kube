@@ -5,15 +5,14 @@
 
 - name: K8s | pull required images
   shell: kubeadm config images pull
+  run_once: true
 
-- name: K8s | Init Kubernetes cluster
-  shell: |
-    kubeadm init --pod-network-cidr {{ pod_network_cidr }}
+- name: K8s | Init Kubernetes cluster with {{ network }}
+  shell: kubeadm init --pod-network-cidr {{ pod_network_cidr }}
   register: kubeadm_init
 
-- debug:
-    var: kubeadm_init
-    verbosity: 4
+# - debug: var=ansible_facts
+- debug: var=kubeadm_init
 
 - name: K8s | Create Kubernetes config directory
   become: false
@@ -56,4 +55,4 @@
 - name: K8s | Install {{ network }} SDN
   when: network == "calico"
   become: false
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  shell: kubectl apply -f https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/calico.yaml
