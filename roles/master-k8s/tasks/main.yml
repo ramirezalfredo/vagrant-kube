@@ -50,7 +50,7 @@
 
 - name: K8s | Install etcd instance
   when: network == "calico"
-  become:false
+  become: false
   shell: kubectl apply -f https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/etcd.yaml
 
 - name: K8s | Install {{ network }} SDN
