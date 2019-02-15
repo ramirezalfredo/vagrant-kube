@@ -31,11 +31,11 @@
     state: present
     filename: kubernetes
 
-# - name: K8s | Install python-apt
-#   when: ansible_facts['os_family'] == "Debian"
-#   package:
-#     name: python-apt
-#     state: present
+- name: K8s | Install python-apt
+  when: ansible_facts['os_family'] == "Debian"
+  package:
+    name: python-apt
+    state: present
 
 - name: SELinux
   when: ansible_facts['os_family'] == "CentOS"

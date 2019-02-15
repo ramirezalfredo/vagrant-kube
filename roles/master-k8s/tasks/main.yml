@@ -5,6 +5,7 @@
 
 - name: K8s | pull required images
   shell: kubeadm config images pull
+
 - name: K8s | Init Kubernetes cluster
   shell: |
     kubeadm init --pod-network-cidr {{ pod_network_cidr }}
@@ -12,7 +13,7 @@
 
 - debug:
     var: kubeadm_init
-    verbosity: 2
+    verbosity: 4
 
 - name: K8s | Create Kubernetes config directory
   become: false
@@ -41,7 +42,18 @@
     enabled: yes
   notify:
     - restart kubelet
-#  register: started_kubelet
-- name: K8s | Install Flannel SDN
+
+- name: K8s | Install {{ network }} SDN
+  when: network == "flannel"
+  become: false
+  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+- name: K8s | Install etcd instance
+  when: network == "calico"
+  become:false
+  shell: kubectl apply -f https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/etcd.yaml
+
+- name: K8s | Install {{ network }} SDN
+  when: network == "calico"
   become: false
   shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml

@@ -2,22 +2,23 @@
 # General
 ansible_user: alfredo
 
-# MongoDB
-MONGOD_CONF: /etc/mongod.conf
-
 # Kubernetes 
 k8s_token: 086db1.099a4e210cc66ce9
 
 # Network implementation('flannel', 'calico')
-network: flannel
-pod_network_cidr: "10.244.0.0/16"
+# network: flannel
+# pod_network_cidr: "10.244.0.0/16"
+network: calico
+pod_network_cidr: "192.168.0.0/16"
 
+# Enable Kubernetes Dashboard
 enable_dashboard: yes
 
 # A list of insecure registrys you might need to define
 # insecure_registrys: ""
 # insecure_registrys: ['gcr.io']
 
+# Other values of interest
 systemd_dir: /lib/systemd/system
 system_env_dir: /etc/sysconfig
 network_dir: /etc/kubernetes/network
