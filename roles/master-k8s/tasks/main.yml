@@ -4,10 +4,10 @@
   become: yes
   shell: "kubeadm reset -f"
 
-# - name: K8s | pull required images
-#   become: yes
-#   shell: kubeadm config images pull
-#   run_once: true
+- name: K8s | pull required images
+  become: yes
+  shell: kubeadm config images pull
+  run_once: true
 
 - name: K8s | Init Kubernetes cluster with {{ network }}
   become: yes
