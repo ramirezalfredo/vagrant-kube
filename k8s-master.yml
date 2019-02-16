@@ -4,7 +4,7 @@
   gather_facts: true
   remote_user: alfredo
   roles:
-    # - common-k8s
+    - common-k8s
     - master-k8s
   tags:
     - k8s-master
