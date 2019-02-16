@@ -14,8 +14,6 @@
   shell: kubeadm init --pod-network-cidr {{ pod_network_cidr }}
   register: kubeadm_init
 
-- debug: var=kubeadm_init
-
 - name: K8s | Create Kubernetes config directory
   file: path="~/.kube/" state=directory
 
@@ -31,16 +29,6 @@
     group: "{{ ansible_user }}"
     mode: 0644
 
-- name: K8s | Enable and restart kubelet engine
-  become: yes
-  systemd:
-    name: kubelet
-    daemon_reload: yes
-    state: restarted
-    enabled: yes
-  notify:
-    - restart kubelet
-
 - name: K8s | Install flannel networking
   when: network == "flannel"
   shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
@@ -52,3 +40,6 @@
 - name: K8s | Install calico networking
   when: network == "calico"
   shell: kubectl apply -f https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/calico.yaml
+
+# - debug: var=kubeadm_init
+- debug: msg="Execute {{ kubeadm_init.stdout_lines[62] }}"
