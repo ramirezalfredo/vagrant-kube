@@ -1,5 +1,4 @@
 ---
-#- debug: var=ansible_facts
 - name: Set authorized key taken from file
   authorized_key:
     user: alfredo
@@ -99,3 +98,9 @@
     name: kubelet
     state: started
     enabled: yes
+
+- name: kubectl BASH completion
+  when: ansible_facts['os_family'] == "Debian"
+  become: yes
+  shell: kubectl completion bash > /etc/bash_completion.d/kubectl
+#- debug: var=ansible_facts
