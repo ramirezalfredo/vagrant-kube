@@ -7,3 +7,17 @@
   become: yes
   roles:
     - common-k8s
+
+- name: k8s-master
+  hosts: master-node
+  gather_facts: False
+  remote_user: alfredo
+  roles:
+    - master-k8s
+
+- name: k8s-worker
+  hosts: worker-node
+  remote_user: alfredo
+  gather_facts: False
+  roles:
+    - worker-k8s
