@@ -1,9 +1,9 @@
 ---
-- name: Set authorized key taken from file
-  authorized_key:
-    user: alfredo
-    state: present
-    key: "{{ lookup('file', '/home/alfredo/.ssh/id_rsa.pub') }}"
+# - name: Set authorized key taken from file
+#   authorized_key:
+#     user: alfredo
+#     state: present
+#     key: "{{ lookup('file', '/home/alfredo/.ssh/id_rsa.pub') }}"
 
 - name: Docker | Install CS Docker Engine repository
   when: ansible_facts['os_family'] == "CentOS"
