@@ -21,7 +21,7 @@
   become: yes
   command: cp {{ kubeadmin_config }} /home/{{ ansible_user }}/.kube/config
 
-- name: K8s | Set permissions to admin.conf in Home directory
+- name: K8s | Set permissions to .kube/config in Home directory
   become: yes
   file:
     path: "/home/{{ ansible_user }}/.kube/config"
@@ -43,3 +43,10 @@
 
 # - debug: var=kubeadm_init
 - debug: msg="{{ kubeadm_init.stdout_lines[62] }}"
+
+# Create a Token
+# sudo kubeadm token create
+# Persist token: 6elr8p.n7idpbtzau52eumq
+# Get the key
+# openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+# Persist key: af3f7ced718fb6a64715c3feb39deccbc0fd0fb23941359b43087039e19441c6
