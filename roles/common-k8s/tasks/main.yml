@@ -43,12 +43,14 @@
 
 - name: Docker | Install docker-engine
   when: ansible_facts['os_family'] == "CentOS"
+  become: yes
   package:
     name: docker-engine-17.03.0.ce-1.el7.centos.x86_64
     state: present
 
 - name: Docker | Install docker.io
   when: ansible_facts['os_family'] == "Debian"
+  become: yes
   package:
     name: docker.io=18.06.1-0ubuntu1.2~16.04.1
     state: present

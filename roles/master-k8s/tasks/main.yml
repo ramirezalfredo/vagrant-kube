@@ -42,7 +42,8 @@
   shell: kubectl apply -f https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/calico.yaml
 
 # - debug: var=kubeadm_init
-- debug: msg="{{ kubeadm_init.stdout_lines[62] }}"
+# - debug: msg="{{ kubeadm_init.stdout_lines[62] }}"
+- debug: msg="{{ kubeadm_init }}"
 
 # Create a Token
 # sudo kubeadm token create
