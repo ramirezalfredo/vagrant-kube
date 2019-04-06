@@ -1,12 +1,12 @@
 ---
 
-- name: restart docker
+- name: Restart Docker
   service: 
     name: docker
     state: restarted
     enabled: yes
 
-- name: restart kubelet
+- name: Restart Kubelet
   service:
     name: kubelet
     state: restarted

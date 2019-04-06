@@ -17,7 +17,7 @@
 - name: K8s | Create Kubernetes config directory
   file: path="~/.kube/" state=directory
 
-- name: k8s | Copy admin.conf to .kube/config
+- name: K8s | Copy admin.conf to .kube/config
   become: yes
   command: cp {{ kubeadmin_config }} /home/{{ ansible_user }}/.kube/config
 

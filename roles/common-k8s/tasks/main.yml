@@ -5,102 +5,14 @@
 #     state: present
 #     key: "{{ lookup('file', '/home/alfredo/.ssh/id_rsa.pub') }}"
 
-- name: Docker | Install CS Docker Engine repository
-  when: ansible_facts['os_family'] == "CentOS"
-  yum_repository:
-    name: docker
-    description: Docker Repository
-    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
-    gpgcheck: 1
-    gpgkey: https://yum.dockerproject.org/gpg
+- include: "{{ role_path }}/tasks/{{ ansible_os_family|lower }}.yml"
 
-- name: Kubernetes | Install Kubernetes repository
-  when: ansible_facts['os_family'] == "CentOS"
-  yum_repository: 
-    name: kubernetes
-    description: Kubernetes Repository
-    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-    gpgcheck: 1
-    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-
-- name: K8s | Install Kubernetes repository
-  when: ansible_facts['os_family'] == "Debian"
-  apt_repository: 
-    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
-    state: present
-    filename: kubernetes
-
-- name: K8s | Install python-apt
-  when: ansible_facts['os_family'] == "Debian"
-  package:
-    name: python-apt
-    state: present
-
-- name: SELinux
-  when: ansible_facts['os_family'] == "CentOS"
-  selinux:
-    state: disabled
-
-- name: Docker | Install docker-engine
-  when: ansible_facts['os_family'] == "CentOS"
-  become: yes
-  package:
-    name: docker-engine-17.03.0.ce-1.el7.centos.x86_64
-    state: present
-
-- name: Docker | Install docker.io
-  when: ansible_facts['os_family'] == "Debian"
-  become: yes
-  package:
-    name: docker.io=18.06.1-0ubuntu1.2~16.04.1
-    state: present
+# - name: K8s | Reload sysctl
+#   command: sysctl --system
 
 - name: K8s | Add user to the Docker group
   become: yes
   command: usermod -aG docker alfredo
-
-- name: Docker | Configure cgroup driver
-  when: ansible_facts['os_family'] == "CentOS"
-  template:
-    src: daemon.json
-    dest: /etc/docker/daemon.json
-  notify:
-    - restart docker
-
-- name: Start Docker
-  service: 
-    name: docker
-    state: started
-    enabled: yes
-
-- name: K8s | Configure iptables
-  when: ansible_facts['os_family'] == "CentOS"
-  template:
-    src: k8s.conf
-    dest: /etc/sysctl.d/k8s.conf
-
-- name: K8s | Reload sysctl
-  command: sysctl --system
-
-- name: K8s | Install kubeadm
-  when: ansible_facts['os_family'] == "CentOS"
-  apt:
-    name: kubeadm=1.13.5-00
-    state: present
-
-- name: K8s | Install kubectl
-  when: ansible_facts['os_family'] == "CentOS"
-  apt:
-    name: kubectl=1.13.5-00
-    state: present
-
-- name: K8s | Install kubelet
-  when: ansible_facts['os_family'] == "CentOS"
-  apt:
-    name: kubelet=1.13.5-00
-    state: present
-  notify:
-    - restart kubelet
 
 - name: K8s | Start kubelet
   service:
