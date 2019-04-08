@@ -33,14 +33,13 @@
   when: network == "flannel"
   shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
-- name: K8s | Install etcd instance for calico
+- name: K8s | Install RBAC for calico
   when: network == "calico"
-  shell: kubectl apply -f https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/etcd.yaml
+  shell: kubectl apply -f https://docs.projectcalico.org/v3.6/manifests/rbac-kdd-calico.yaml
 
 - name: K8s | Install calico networking
   when: network == "calico"
-  shell: kubectl apply -f https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/calico.yaml
-
+  shell: kubectl apply -f https://docs.projectcalico.org/v3.6/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
 # - debug: var=kubeadm_init
 # - debug: msg="{{ kubeadm_init.stdout_lines[62] }}"
 - debug: msg="{{ kubeadm_init }}"
