@@ -1,5 +1,5 @@
 ---
-# - name: Set authorized key taken from file
+# - name: Set authorized key from file
 #   authorized_key:
 #     user: alfredo
 #     state: present

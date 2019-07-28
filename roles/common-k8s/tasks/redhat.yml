@@ -47,19 +47,13 @@
     src: k8s.conf
     dest: /etc/sysctl.d/k8s.conf
 
-- name: K8s | Install kubeadm
+- name: K8s | Install Kubernetes Packages
   yum:
-    name: kubeadm=1.13.5-00
+    name: "{{ item }}"
     state: present
-
-- name: K8s | Install kubectl
-  yum:
-    name: kubectl=1.13.5-00
-    state: present
-
-- name: K8s | Install kubelet
-  yum:
-    name: kubelet=1.13.5-00
-    state: present
+  with_items:
+      - kubeadm=1.13.7-00
+      - kubectl=1.13.7-00
+      - kubelet=1.13.7-00
   notify:
-    - restart kubelet
+    - Restart Kubelet

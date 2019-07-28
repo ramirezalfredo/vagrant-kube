@@ -5,7 +5,6 @@
     state: present
 
 - name: Docker | Install docker.io
-  # when: ansible_facts['os_family'] == "Debian"
   become: yes
   package:
     name: docker.io=18.06.1-0ubuntu1.2~16.04.1
@@ -18,25 +17,18 @@
     enabled: yes
 
 - name: K8s | Install Kubernetes repository
-  # when: ansible_facts['os_family'] == "Debian"
-  apt_repository: 
+  apt_repository:
     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
     state: present
     filename: kubernetes
 
-- name: K8s | Install kubeadm
+- name: K8s | Install Kubernetes Packages
   apt:
-    name: kubeadm=1.13.5-00
+    name: "{{ item }}"
     state: present
-
-- name: K8s | Install kubectl
-  apt:
-    name: kubectl=1.13.5-00
-    state: present
-
-- name: K8s | Install kubelet
-  apt:
-    name: kubelet=1.13.5-00
-    state: present
+  with_items:
+      - kubeadm=1.14.4-00
+      - kubectl=1.14.4-00
+      - kubelet=1.14.4-00
   notify:
-    - restart kubelet
+    - Restart Kubelet
