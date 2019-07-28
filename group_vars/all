@@ -6,10 +6,10 @@ ansible_user: alfredo
 k8s_token: 086db1.099a4e210cc66ce9
 
 # Network implementation('flannel', 'calico')
-# network: flannel
-# pod_network_cidr: "10.244.0.0/16"
-network: calico
-pod_network_cidr: "192.168.0.0/16"
+network: flannel
+pod_network_cidr: "10.244.0.0/16"
+# network: calico
+# pod_network_cidr: "192.168.0.0/16"
 
 # Enable Kubernetes Dashboard
 enable_dashboard: yes
@@ -24,3 +24,4 @@ system_env_dir: /etc/sysconfig
 network_dir: /etc/kubernetes/network
 kubeadmin_config: /etc/kubernetes/admin.conf
 kube_addon_dir: /etc/kubernetes/addon
+kubernetes_version: 1.14.4-00
