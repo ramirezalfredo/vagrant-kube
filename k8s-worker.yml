@@ -1,6 +1,6 @@
 ---
 - name: k8s-worker
-  hosts: worker-node
+  hosts: workers
   gather_facts: true
   remote_user: alfredo
   roles:

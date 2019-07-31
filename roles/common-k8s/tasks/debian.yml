@@ -1,34 +1,53 @@
 ---
-- name: Ansible | Install python-apt
+- name: Ansible | installing python-apt
+  become: yes
   package:
     name: python-apt
     state: present
 
-- name: Docker | Install docker.io
+- name: Docker | Add Docker’s official GPG key
+  become: yes
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+- name: K8s | installing Docker apt repository
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    state: present
+    filename: docker
+
+- name: Docker | installing docker-ce
   become: yes
   package:
-    name: docker.io=18.06.1-0ubuntu1.2~16.04.1
+    name: docker-ce=18.06.2~ce~3-0~ubuntu
     state: present
 
-- name: Start Docker
+- name: Docker | configuring cgroup driver
+  become: yes
+  template:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+
+- name: Docker | Start Docker
+  become: yes
   service: 
     name: docker
-    state: started
+    state: restarted
     enabled: yes
 
-- name: K8s | Install Kubernetes repository
+- name: K8s | install Kubernetes repository
+  become: yes
   apt_repository:
     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
     state: present
     filename: kubernetes
 
 - name: K8s | Install Kubernetes Packages
+  become: yes
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-      - kubeadm=1.14.4-00
-      - kubectl=1.14.4-00
-      - kubelet=1.14.4-00
-  notify:
-    - Restart Kubelet
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - kubeadm=1.14.4-00
+    - kubectl=1.14.4-00
+    - kubelet=1.14.4-00

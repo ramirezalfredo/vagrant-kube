@@ -12,7 +12,7 @@ pod_network_cidr: "10.244.0.0/16"
 # pod_network_cidr: "192.168.0.0/16"
 
 # Enable Kubernetes Dashboard
-enable_dashboard: yes
+# enable_dashboard: yes
 
 # A list of insecure registrys you might need to define
 # insecure_registrys: ""

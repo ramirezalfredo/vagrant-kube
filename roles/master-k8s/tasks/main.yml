@@ -31,7 +31,8 @@
 
 - name: K8s | Install flannel networking
   when: network == "flannel"
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  shell: kubectl apply -f "https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml"
+- debug: msg="{{ kubeadm_init }}"
 
 - name: K8s | Install RBAC for calico
   when: network == "calico"
