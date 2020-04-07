@@ -37,6 +37,10 @@
     state: restarted
     enabled: yes
 
+- name: Docker | Add Kubernetes’s official GPG key
+  become: yes
+  shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
 - name: K8s | install Kubernetes repository
   become: yes
   apt_repository:
