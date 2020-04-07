@@ -4,7 +4,7 @@
   become: yes
   shell: "kubeadm reset -f"
 
-- name: K8s | pull required images
+- name: K8s | Pull required images
   become: yes
   shell: kubeadm config images pull
   run_once: true
@@ -31,7 +31,7 @@
 
 - name: K8s | Install flannel networking
   when: network == "flannel"
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  shell: kubectl apply -f "https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml"
 
 - name: K8s | Install RBAC for calico
   when: network == "calico"
@@ -40,9 +40,10 @@
 - name: K8s | Install calico networking
   when: network == "calico"
   shell: kubectl apply -f https://docs.projectcalico.org/v3.6/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
+
 # - debug: var=kubeadm_init
 # - debug: msg="{{ kubeadm_init.stdout_lines[62] }}"
-- debug: msg="{{ kubeadm_init }}"
+# - debug: msg="{{ kubeadm_init }}"
 
 # Create a Token
 # sudo kubeadm token create
@@ -50,3 +51,25 @@
 # Get the key
 # openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
 # Persist key: af3f7ced718fb6a64715c3feb39deccbc0fd0fb23941359b43087039e19441c6
+
+- name: "Cluster token"
+  shell: kubeadm token list | cut -d ' ' -f1 | sed -n '2p'
+  register: K8S_TOKEN
+
+- name: "CA Hash"
+  shell: openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+  register: K8S_MASTER_CA_HASH
+
+- name: "Add K8S Token and Hash to dummy host"
+  add_host:
+    name:   "K8S_TOKEN_HOLDER"
+    token:  "{{ K8S_TOKEN.stdout }}"
+    hash:   "{{ K8S_MASTER_CA_HASH.stdout }}"
+
+- name:
+  debug:
+    msg: "[Master] K8S_TOKEN_HOLDER K8S token is {{ hostvars['K8S_TOKEN_HOLDER']['token'] }}"
+
+- name:
+  debug:
+    msg: "[Master] K8S_TOKEN_HOLDER K8S Hash is  {{ hostvars['K8S_TOKEN_HOLDER']['hash'] }}"

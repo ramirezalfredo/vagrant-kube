@@ -1,8 +1,8 @@
 ---
 - name: k8s-worker
-  hosts: worker-node
+  hosts: workers
   gather_facts: true
-  remote_user: alfredo
+  remote_user: "{{ ansible_user }}"
   roles:
     - common-k8s
     - worker-k8s
