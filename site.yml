@@ -1,23 +1,4 @@
 ---
-
-- name: k8s-common
-  hosts: all
-  gather_facts: true
-  remote_user: alfredo
-  become: yes
-  roles:
-    - common-k8s
-
-- name: k8s-master
-  hosts: master-node
-  gather_facts: False
-  remote_user: alfredo
-  roles:
-    - master-k8s
-
-- name: k8s-worker
-  hosts: worker-node
-  remote_user: alfredo
-  gather_facts: False
-  roles:
-    - worker-k8s
+  # file: site.yml
+  - import_playbook: k8s-master.yml
+  - import_playbook: k8s-worker.yml

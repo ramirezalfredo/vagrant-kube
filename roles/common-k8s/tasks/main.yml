@@ -12,9 +12,4 @@
 
 - name: K8s | Add user to the Docker group
   become: yes
-  command: usermod -aG docker alfredo
-
-- name: kubectl BASH completion
-  when: ansible_facts['os_family'] == "Debian"
-  become: yes
-  shell: kubectl completion bash > /etc/bash_completion.d/kubectl
+  command: usermod -aG docker {{ ansible_user }}

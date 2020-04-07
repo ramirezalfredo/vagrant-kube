@@ -5,6 +5,8 @@
     name: python-apt
     state: present
 
+## [WARNING]: Consider using the get_url or uri module rather than running 'curl'.
+## If you need to use command because get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in ansible.cfg to get rid of this message.
 - name: Docker | Add Docker’s official GPG key
   become: yes
   shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
@@ -46,8 +48,31 @@
   become: yes
   apt:
     name: "{{ packages }}"
+    allow_unauthenticated: yes
   vars:
     packages:
-    - kubeadm=1.14.4-00
-    - kubectl=1.14.4-00
-    - kubelet=1.14.4-00
+    - kubeadm={{ kubernetes_version }}
+    - kubectl={{ kubernetes_version }}
+    - kubelet={{ kubernetes_version }}
+
+- name: K8s | Hold Kubernetes Packages
+  become: yes
+  shell: apt-mark hold kubeadm kubectl kubelet
+
+- name: kubectl BASH completion
+  become: yes
+  shell: kubectl completion bash > /etc/bash_completion.d/kubectl
+
+- name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
+  become: yes
+  shell: |
+    swapoff -a
+  # when: kubernetes_installed is changed
+
+- name: Disable SWAP in fstab since kubernetes can't work with swap enabled (2/2)
+  become: yes
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+  # when: kubernetes_installed is changed

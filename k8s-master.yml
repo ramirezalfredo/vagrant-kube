@@ -2,7 +2,7 @@
 - name: k8s-master
   hosts: masters
   gather_facts: true
-  remote_user: alfredo
+  remote_user: "{{ ansible_user }}"
   roles:
     - common-k8s
     - master-k8s
