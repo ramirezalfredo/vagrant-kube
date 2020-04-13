@@ -1,15 +1,15 @@
 ---
-- name: Ansible | installing python-apt
+- name: Ansible | installing python3-apt
   become: yes
   package:
-    name: python-apt
+    name: python3-apt
     state: present
 
-## [WARNING]: Consider using the get_url or uri module rather than running 'curl'.
-## If you need to use command because get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in ansible.cfg to get rid of this message.
 - name: Docker | Add Docker’s official GPG key
   become: yes
-  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
 
 - name: K8s | installing Docker apt repository
   become: yes
@@ -37,10 +37,12 @@
     state: restarted
     enabled: yes
 
-- name: Docker | Add Kubernetes’s official GPG key
+- name: K8s | Add Kubernetes’s official GPG key
   become: yes
-  shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg 
+    state: present
+  
 - name: K8s | install Kubernetes repository
   become: yes
   apt_repository:
