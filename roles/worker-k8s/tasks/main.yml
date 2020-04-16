@@ -2,7 +2,6 @@
 - name: K8s | Reset Kubernetes component
   become: yes
   shell: "kubeadm reset -f"
-  #register: reset_cluster
 
 - name:
   debug:
@@ -13,11 +12,9 @@
     msg: "[Worker] K8S_TOKEN_HOLDER K8S Hash is  {{ hostvars['K8S_TOKEN_HOLDER']['hash'] }}"
 
 - name: K8s | Join to Kubernetes cluster
-  #when: reset_cluster|succeeded
   become: yes
   shell: |
     kubeadm join {{ k8s_master_ip }}:6443 --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }}
-  #register: join_cluster
 
 - name: Enable and restart kubelet engine
   become: yes

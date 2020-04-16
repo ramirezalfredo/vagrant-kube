@@ -1,4 +1,5 @@
 ---
+# Kubernetes workers
 - name: k8s-worker
   hosts: workers
   gather_facts: true
@@ -6,5 +7,4 @@
   roles:
     - common-k8s
     - worker-k8s
-  tags:
-    - k8s-worker
+

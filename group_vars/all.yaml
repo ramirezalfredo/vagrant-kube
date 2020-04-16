@@ -3,7 +3,7 @@
 ansible_user: vagrant
 
 # Kubernetes
-k8s_master_ip: "192.168.0.30"
+k8s_master_ip: "192.168.0.31"
 k8s_token: "086db1.099a4e210cc66ce9"
 
 # Network implementation('flannel', 'calico')
@@ -26,3 +26,10 @@ network_dir: /etc/kubernetes/network
 kubeadmin_config: /etc/kubernetes/admin.conf
 kube_addon_dir: /etc/kubernetes/addon
 kubernetes_version: 1.15.5-00
+
+# Azure Resource Names
+rg_name: "kubeadmResources"
+vnet_name: "kubeadmVnet"
+subnet_name: "kubeadmSubnet"
+nsg_name: "kubeadmNsg"
+pip_name: "bastionIp"
