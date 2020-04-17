@@ -15,7 +15,7 @@
 
 - name: K8s | Init Kubernetes cluster with {{ network }}
   become: yes
-  shell: kubeadm init --pod-network-cidr {{ pod_network_cidr }}
+  shell: kubeadm init --pod-network-cidr {{ pod_network_cidr }} --ignore-preflight-errors 'all'
   register: kubeadm_init
   tags:
     - kubernetes

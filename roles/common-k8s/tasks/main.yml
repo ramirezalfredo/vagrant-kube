@@ -10,15 +10,17 @@
 # - name: K8s | Reload sysctl
 #   command: sysctl --system
 
-# - name: K8s | Add user to the Docker group
-#   become: yes
-#   command: usermod -aG docker {{ ansible_user }}
 - name: K8s | Add user to the Docker group
   become: yes
-  user: 
-    name: vagrant
-    shell: /bin/bash
-    append: yes
-    groups: [ adm, cdrom, sudo, dip, plugdev, lxd, lpadmin, sambashare, docker ]
+  command: usermod -aG docker {{ ansible_user }}
   tags:
     - provision
+# - name: K8s | Add user to the Docker group
+#   become: yes
+#   user: 
+#     name: {{ ansible_user }}
+#     shell: /bin/bash
+#     append: yes
+#     groups: [ adm, cdrom, sudo, dip, plugdev, lxd, lpadmin, sambashare, docker ]
+#   tags:
+#     - provision
