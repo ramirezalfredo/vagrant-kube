@@ -1,9 +1,9 @@
 ---
 # General
-ansible_user: vagrant
+ansible_user: azureuser
 
 # Kubernetes
-k8s_master_ip: "192.168.0.31"
+k8s_master_ip: "10.0.1.5"
 k8s_token: "086db1.099a4e210cc66ce9"
 
 # Network implementation('flannel', 'calico')
