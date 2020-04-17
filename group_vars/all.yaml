@@ -28,8 +28,10 @@ kube_addon_dir: /etc/kubernetes/addon
 kubernetes_version: 1.15.5-00
 
 # Azure Resource Names
-rg_name: "kubeadmResources"
-vnet_name: "kubeadmVnet"
-subnet_name: "kubeadmSubnet"
-nsg_name: "kubeadmNsg"
-pip_name: "bastionIp"
+rg_name: "kubeadm-rg"
+vnet_name: "kubeadm-vnet"
+subnet_name: "kubeadm-subnet"
+nsg_name: "bastion-nsg"
+nic_name: "bastion-nic"
+pip_name: "bastion-ip"
+ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDzFpO6ZpMujrsJK26kIIqoWVADkvP4scKhyTlx8u+lgoGVotJh+0+yPCm9xvDbiCbHWFXlqpsIULDO2ogtHKfuvbnZQDFojzJmV6oSFtGmdgTTyXoK3k0xUHNVwU0ORwOI6pvQV+jhMer1EpEUsIAC+R1xKeUQbGXBF6e2E1tT9UvcuKMvfYLAF9CoLRDJtOdRmS0733aRCAH6R3nhPIXkzphd5MXfS80A1XDCTyPLuh7dWNSp93jJ6c4CmbkYcwxces/h2FT7mIy92lQvA6OazUX47YviFQ+DzS0kIl/kDFV77wZAeE95LavksbtOEdVyW3Tauq5m1jwOE2AH8tUIuSrVCRhOxlx711PkaSwtLKtUHbgyhO98+YD94vmy+qgSrYD5VxIzFFZ7c+u25j4xyXRtGUlgh2i2f6zp0b3cRU5GPnyHNHJEhSiAflr42sFB6Q83lhHWJn9Rc9yExIvrKjG3Gxt5h0vn+imbEARgSxjmAl9+3fV2HTiN/AHL5aiFxHrm00No7VJV8RIdBh3yMG1LQK3kVPOGfMKUIo0sOlB/RKpZIgpwPCD+vU0A8F/dyGnbw9rLhcSXEfFhsenueEOHkc7Ih9Fj35p0hPcTkYi0oeVyAtf52RC3QDdqbd55Y1XogdBXcmr9yx6QAPlGMCWuF0Gl/0mYL3koxlKBkw== alfredo@MININT-7T6329A"
