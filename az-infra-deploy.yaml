@@ -111,3 +111,24 @@
       tags:
         Name: workernode1
         Role: k8s-worker
+  - name: Create Worker VM 2
+    azure_rm_virtualmachine:
+      resource_group: "{{ rg_name }}"
+      name: workernode2
+      # state: absent
+      vm_size: Standard_DS1_v2
+      admin_username: azureuser
+      ssh_password_enabled: false
+      ssh_public_keys:
+        - path: /home/azureuser/.ssh/authorized_keys
+          key_data: "{{ ssh_key }}"
+      image:
+        offer: UbuntuServer
+        publisher: Canonical
+        sku: '16.04-LTS'
+        version: latest
+      managed_disk_type: Standard_LRS
+      public_ip_allocation_method: Disabled
+      tags:
+        Name: workernode2
+        Role: k8s-worker
