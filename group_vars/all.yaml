@@ -28,6 +28,7 @@ kube_addon_dir: /etc/kubernetes/addon
 kubernetes_version: 1.15.5-00
 
 # Azure Resource Names
+az_location: eastus2
 rg_name: "kubeadm-rg"
 vnet_name: "kubeadm-vnet"
 subnet_name: "kubeadm-subnet"
