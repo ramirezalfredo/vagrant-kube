@@ -1,0 +1,22 @@
+---
+# Stop everything
+- name: Create Azure VM
+  hosts: localhost
+  connection: local
+  tasks:
+  - name: Deallocate workernode2
+    azure_rm_virtualmachine:
+      resource_group: "{{ rg_name }}"
+      name: workernode2
+  - name: Deallocate workernode1
+    azure_rm_virtualmachine:
+      resource_group: "{{ rg_name }}"
+      name: workernode1
+  - name: Deallocate masternode1
+    azure_rm_virtualmachine:
+      resource_group: "{{ rg_name }}"
+      name: masternode1
+  - name: Deallocate bastion
+    azure_rm_virtualmachine:
+      resource_group: "{{ rg_name }}"
+      name: bastion
